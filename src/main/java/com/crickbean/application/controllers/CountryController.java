@@ -8,6 +8,7 @@ import com.crickbean.application.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,36 +31,35 @@ public class CountryController {
     private ServletContext context;
 
     @GetMapping("/country/add")
-    public String addCountry(Model model){
+    public String addCountry(Model model) {
         model.addAttribute("country", new CountryDto());
         model.addAttribute("allCountry", countryService.getAllCountry());
         model.addAttribute("message", "Insert a new country");
         return "admin/country/countries";
     }
+
     @PostMapping("/country/add")
-    public String addCountry(@ModelAttribute(name = "country") CountryDto countryDto, @RequestParam("file") MultipartFile file, Model model){
-        if(countryDto.getCountryName()==null || countryDto.getCountryName().trim().isEmpty())
-        {
-            throw  new ResourceNotFoundException("Country not found");
+    public String addCountry(@ModelAttribute(name = "country") CountryDto countryDto, @RequestParam("file") MultipartFile file, Model model) {
+        if (countryDto.getCountryName() == null || countryDto.getCountryName().trim().isEmpty()) {
+            throw new ResourceNotFoundException("Country not found");
         }
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new ResourceNotFoundException("Country flag not found");
         }
-        try{
+        try {
             byte[] bytes = file.getBytes();
             String getAbsoluteFilePath = Constants.UPLOADED_FOLDER;
-            Path path = Paths.get(getAbsoluteFilePath+file.getOriginalFilename());
+            Path path = Paths.get(getAbsoluteFilePath + file.getOriginalFilename());
             File dir = Paths.get(getAbsoluteFilePath).toFile();
-            if(!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             Files.write(path, bytes);
-            countryDto.setCountryLogo("/images/"+file.getOriginalFilename());
+            countryDto.setCountryLogo("/images/" + file.getOriginalFilename());
             countryService.save(countryDto);
             model.addAttribute("message", "Country added successfully");
             return "redirect:/country/add";
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new ResourceNotFoundException(e.getMessage());
         }
 
@@ -74,29 +74,27 @@ public class CountryController {
 
     @PostMapping("/country/update")
     public String updateCountry(@ModelAttribute(name = "country") CountryDto countryDto, Model model, @RequestParam("file") MultipartFile file) {
-        if(countryDto.getCountryName()==null || countryDto.getCountryName().trim().isEmpty())
-        {
-            throw  new ResourceNotFoundException("Country not found");
+        if (countryDto.getCountryName() == null || countryDto.getCountryName().trim().isEmpty()) {
+            throw new ResourceNotFoundException("Country not found");
         }
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new ResourceNotFoundException("Country flag not found");
         }
-        try{
+        try {
             byte[] bytes = file.getBytes();
             String getAbsoluteFilePath = Constants.UPLOADED_FOLDER;
-            Path path = Paths.get(getAbsoluteFilePath+file.getOriginalFilename());
+            Path path = Paths.get(getAbsoluteFilePath + file.getOriginalFilename());
             File dir = Paths.get(getAbsoluteFilePath).toFile();
-            if(!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             Files.write(path, bytes);
-            countryDto.setCountryLogo("/images/"+file.getOriginalFilename());
+            countryDto.setCountryLogo("/images/" + file.getOriginalFilename());
             System.out.println(countryDto);
             countryService.saveUpdate(countryDto);
             model.addAttribute("message", "Country updated successfully");
             return "redirect:/country/add";
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new ResourceNotFoundException(e.getMessage());
         }
     }
@@ -105,5 +103,11 @@ public class CountryController {
     public String deleteCountry(@RequestParam(name = "countryId") Long id) {
         countryService.deleteCountryById(id);
         return "redirect:/country/add";
+    }
+
+    @GetMapping("/country/show-all")
+    public String showAllCountry(Model model) {
+        model.addAttribute("country", countryService.getAllCountry());
+        return "/country/countries";
     }
 }
