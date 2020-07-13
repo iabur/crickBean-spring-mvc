@@ -38,7 +38,7 @@
                             <!-- Card content -->
                             <div class="card-body">
                                 <!-- Title -->
-                                <h4 class="card-title">${team.teamName}</h4>
+                                <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/member/members?teamId=${team.teamId}&queryText=">${team.teamName}</a></h4>
                                 <hr/>
                                 <!-- Text -->
                                 <p class="card-text">
