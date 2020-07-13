@@ -4,6 +4,7 @@ import com.crickbean.application.dto.CountryDto;
 import com.crickbean.application.dto.TeamDto;
 import com.crickbean.application.exceptions.ResourceNotFoundException;
 import com.crickbean.application.model.Team;
+import com.crickbean.application.service.CountryService;
 import com.crickbean.application.service.TeamService;
 import com.crickbean.application.util.Constants;
 import javafx.scene.chart.ScatterChart;
@@ -27,10 +28,13 @@ public class TeamController {
     @Autowired
     private TeamService teamService;
 
+    @Autowired
+    private CountryService countryService;
 
     @GetMapping("/team/add")
     public String addTeam(Model model) {
         model.addAttribute("allTeams", teamService.allTeams());
+        model.addAttribute("countries", countryService.getAllCountry());
         model.addAttribute("team", new TeamDto());
         return "admin/team/teams";
     }
@@ -65,6 +69,7 @@ public class TeamController {
     @GetMapping("/team/update")
     public String updateTeam(@RequestParam(name = "teamId") Long id, Model model) {
         model.addAttribute("teamId", id);
+        model.addAttribute("countries", countryService.getAllCountry());
         model.addAttribute("team", new TeamDto());
         return "admin/team/editTeams";
     }
@@ -101,10 +106,19 @@ public class TeamController {
         return "redirect:/team/add";
     }
 
-    @GetMapping("team/show_all")
-    public String allTeams(Model model){
-        model.addAttribute("teams", teamService.allActiveTeams());
+
+    @GetMapping("/team/teams")
+    public String specificTeam(Model model, @RequestParam(name = "countryId") Long countryId, @RequestParam(name = "queryText") String queryText) {
+
+        if(countryId == null)
+        {
+            model.addAttribute("countryId", -1);
+            model.addAttribute("teams", teamService.allActiveTeams(queryText));
+        }
+        else {
+            model.addAttribute("countryId", countryId);
+            model.addAttribute("teams",teamService.specificTeams(countryId, queryText));
+        }
         return "team/allTeams";
     }
-
 }

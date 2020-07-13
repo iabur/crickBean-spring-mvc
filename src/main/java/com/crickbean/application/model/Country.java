@@ -2,6 +2,7 @@ package com.crickbean.application.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_country")
@@ -19,6 +20,9 @@ public class Country implements Serializable {
 
     @Column(name = "is_active")
     private boolean active = true;
+
+    @OneToMany(mappedBy = "country")
+    private Set<Team> teams;
 
     public Country() {
     }
@@ -53,5 +57,13 @@ public class Country implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
     }
 }

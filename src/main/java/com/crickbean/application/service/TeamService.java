@@ -4,6 +4,7 @@ import com.crickbean.application.dto.CountryDto;
 import com.crickbean.application.dto.TeamDto;
 import com.crickbean.application.model.Country;
 import com.crickbean.application.model.Team;
+import com.crickbean.application.repositories.CountryRepository;
 import com.crickbean.application.repositories.TeamRepository;
 import com.google.protobuf.Option;
 import org.springframework.beans.BeanUtils;
@@ -19,9 +20,14 @@ public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Autowired
+    private CountryRepository countryRepository;
+
     public void saveTeam(TeamDto teamDto){
         Team team = new Team();
         BeanUtils.copyProperties(teamDto, team);
+        Country country = countryRepository.findById(teamDto.getCountryId()).get();
+        team.setCountry(country);
         team.setActive(true);
         teamRepository.save(team);
     }
@@ -32,14 +38,15 @@ public class TeamService {
         teamRepository.findAll().forEach(team -> {
             TeamDto teamDto = new TeamDto();
             BeanUtils.copyProperties(team, teamDto);
+            teamDto.setCountryName(team.getCountry().getCountryName());
             teamDtoList.add(teamDto);
         });
         return teamDtoList;
     }
 
-    public List<TeamDto> allActiveTeams(){
+    public List<TeamDto> allActiveTeams(String queryText){
         List<TeamDto> teamDtoList = new ArrayList<>();
-        teamRepository.findAllByActiveTrue().forEach(team -> {
+        teamRepository.findAllByActiveTrueAndTeamNameContaining(queryText).forEach(team -> {
             TeamDto teamDto = new TeamDto();
             BeanUtils.copyProperties(team, teamDto);
             teamDtoList.add(teamDto);
@@ -50,6 +57,8 @@ public class TeamService {
     public void saveUpdate(TeamDto teamDto){
         Team team = teamRepository.findById(teamDto.getTeamId()).get();
         BeanUtils.copyProperties(teamDto, team);
+        Country country = countryRepository.findById(teamDto.getCountryId()).get();
+        team.setCountry(country);
         teamRepository.save(team);
     }
 
@@ -68,5 +77,8 @@ public class TeamService {
         return teamRepository.findById(teamId);
     }
 
+    public List<Team> specificTeams(Long countryId, String queryText){
+        return teamRepository.findAllByActiveTrueAndCountryAndTeamNameContaining(countryRepository.findById(countryId).get(), queryText);
+    }
 
 }

@@ -26,6 +26,9 @@ public class CountryService {
     public List<Country> getAllCountry(){
         return countryRepository.findAll();
     }
+    public List<Country> getAllActiveCountry(){
+        return countryRepository.findAllByActiveTrue();
+    }
     public Optional<Country> getCountryById(Long id){
        return countryRepository.findById(id);
     }
@@ -37,6 +40,21 @@ public class CountryService {
     }
 
     public void deleteCountryById(Long countryId) {
-        countryRepository.deleteById(countryId);
+        Country country = countryRepository.findById(countryId).get();
+        if(country.isActive() == true){
+            country.setActive(false);
+        }
+        else {
+            country.setActive(true);
+        }
+        countryRepository.save(country);
+    }
+
+    public List<Country> searchCountry(String countryString){
+        return countryRepository.findAllByActiveTrueAndCountryNameContains(countryString);
+    }
+
+    public Optional<Country> countryById(Long id){
+        return countryRepository.findById(id);
     }
 }

@@ -6,6 +6,8 @@ public class TeamDto {
     private String teamType;
     private String teamDescription;
     private String teamPhoto;
+    private Long countryId;
+    private String countryName;
     private boolean active;
 
     public Long getTeamId() {
@@ -56,6 +58,22 @@ public class TeamDto {
         this.active = active;
     }
 
+    public Long getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
     @Override
     public String toString() {
         return "TeamDto{" +
@@ -64,6 +82,8 @@ public class TeamDto {
                 ", teamType='" + teamType + '\'' +
                 ", teamDescription='" + teamDescription + '\'' +
                 ", teamPhoto='" + teamPhoto + '\'' +
+                ", countryId=" + countryId +
+                ", countryName='" + countryName + '\'' +
                 ", active=" + active +
                 '}';
     }

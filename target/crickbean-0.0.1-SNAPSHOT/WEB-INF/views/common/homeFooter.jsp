@@ -13,7 +13,7 @@
                 <div class="col-sm-6 col-md-3 item">
                     <h3>About</h3>
                     <ul>
-                        <li><a href="#">Countries</a></li>
+                        <li><a href="${pageContext.request.contextPath}/countyr/show-all">Countries</a></li>
                         <li><a href="#">Teams</a></li>
                         <li><a href="#">Team Members</a></li>
                     </ul>

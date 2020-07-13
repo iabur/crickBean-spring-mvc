@@ -4,12 +4,13 @@
     <div class="container">
         <form class="form-inline md-form mr-auto mb-4">
             <input
+                    id="queryText"
                     class="form-control mr-sm-2"
                     type="text"
                     placeholder="Search"
                     aria-label="Search"
             />
-            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">
+            <button id="searchButton" class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">
                 Search
             </button>
         </form>
@@ -34,7 +35,7 @@
                         <!-- Card content -->
                         <div class="card-body">
                             <!-- Title -->
-                            <h4 class="card-title"><a style="text-decoration: none" href="">${country.countryName}</a></h4>
+                            <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/team/teams?countryId=${country.country_id}&queryText=">${country.countryName}</a></h4>
                             <hr/>
                             <!-- Text -->
                             <p class="card-text">
@@ -51,3 +52,11 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/common/homeFooter.jsp"/>
+
+//replace the url with query text for searching
+<script>
+    $('#searchButton').click(function (e) {
+        e.preventDefault();
+        window.location = "show-all?queryText="+$('#queryText').val();
+    })
+</script>

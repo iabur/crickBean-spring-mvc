@@ -106,8 +106,9 @@ public class CountryController {
     }
 
     @GetMapping("/country/show-all")
-    public String showAllCountry(Model model) {
-        model.addAttribute("country", countryService.getAllCountry());
+    public String showAllCountry(Model model, @RequestParam(name = "queryText") String queryText) {
+        model.addAttribute("country", countryService.searchCountry(queryText));
         return "/country/countries";
     }
+
 }

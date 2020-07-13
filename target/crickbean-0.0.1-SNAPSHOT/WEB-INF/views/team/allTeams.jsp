@@ -3,12 +3,13 @@
 <div class="container">
     <form class="form-inline md-form mr-auto mb-4">
         <input
+                id="queryText"
                 class="form-control mr-sm-2"
                 type="text"
                 placeholder="Search"
                 aria-label="Search"
         />
-        <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">
+        <button id="submitText" class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">
             Search
         </button>
     </form>
@@ -42,6 +43,7 @@
                                 <!-- Text -->
                                 <p class="card-text">
                                         ${team.teamDescription}
+
                                 </p>
                             </div>
                         </div>
@@ -81,16 +83,29 @@
                                 <!-- Text -->
                                 <p class="card-text">
                                         ${team.teamDescription}
+
                                 </p>
                                 <!-- Link -->
                             </div>
                         </div>
                         <!-- Card Light -->
                     </div>
-
                 </c:if>
             </c:forEach>
         </div>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/common/homeFooter.jsp"/>
+//replace the url with query text for searching
+<script>
+    $('#submitText').click(function (e) {
+        e.preventDefault();
+        var countryId = ${countryId};
+        if (countryId>=0){
+            window.location = "teams?queryText="+$('#queryText').val()+"&countryId="+countryId;
+        }
+        else {
+            window.location = "teams?queryText="+$('#queryText').val()+"&countryId=";
+        }
+    })
+</script>

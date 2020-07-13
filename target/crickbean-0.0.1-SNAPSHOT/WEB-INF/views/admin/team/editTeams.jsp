@@ -13,6 +13,12 @@
         />
     </div>
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
+        <label for="type" class="mr-3">Select Country: </label>
+        <form:select path="countryId" class="form-control">
+            <form:options items="${countries}" itemValue="country_id" itemLabel="countryName"/>
+        </form:select>
+    </div>
+    <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
         <label for="type" class="mr-3">Team Type: </label>
         <form:select path="teamType" class="form-control">
             <form:option value="International" label="International"/>

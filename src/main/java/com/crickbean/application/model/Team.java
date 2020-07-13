@@ -26,6 +26,10 @@ public class Team implements Serializable {
     @Column(name = "is_active")
     private boolean active = true;
 
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
+
     public Team() {
     }
     
@@ -76,5 +80,13 @@ public class Team implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }

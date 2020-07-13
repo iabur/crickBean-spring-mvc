@@ -14,6 +14,14 @@
                 placeholder="Team Name"
         />
     </div>
+
+    <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
+        <label for="type" class="mr-3">Select Country: </label>
+        <form:select path="countryId" class="form-control">
+            <form:options items="${countries}" itemValue="country_id" itemLabel="countryName"/>
+        </form:select>
+    </div>
+
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
         <label for="type" class="mr-3">Team Type: </label>
         <form:select path="teamType" class="form-control">
@@ -21,12 +29,13 @@
             <form:option value="Local" label="Local"/>
         </form:select>
     </div>
+
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
         <label for="description" class="mr-3">Description: </label>
         <form:textarea path="teamDescription"
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
+                       class="form-control"
+                       id="exampleFormControlTextarea1"
+                       rows="3"
         ></form:textarea>
     </div>
 
@@ -44,6 +53,7 @@
         <th>Team Name</th>
         <th>Team Type</th>
         <th>Active Status</th>
+        <th>Country Name</th>
         <th>Team Description</th>
         <th>Logo</th>
         <th>Update</th>
@@ -52,27 +62,30 @@
     </thead>
     <tbody>
     <c:forEach items="${allTeams}" var="team">
-    <tr>
-        <td>${team.teamName}</td>
-        <td>${team.teamType}</td>
-        <td><c:if test="${team.active==true}">Active</c:if>
-            <c:if test="${team.active==false}">Inactive</c:if>
-        </td>
-        <td>
-           ${team.teamDescription}
-        </td>
-        <td><img style="width: 200px" src="${pageContext.request.contextPath}${team.teamPhoto}" alt=""/></td>
-        <td>
-            <a href="${pageContext.request.contextPath}/team/update?teamId=${team.teamId}" class="btn btn-primary btn-circle ml-1" role="button"
-            ><i class="far fa-edit text-white"></i
-            ></a>
-        </td>
-        <td>
-            <a href="${pageContext.request.contextPath}/team/delete?teamId=${team.teamId}" class="btn btn-danger btn-circle ml-1" role="button"
-            ><i class="fas fa-trash text-white"></i
-            ></a>
-        </td>
-    </tr>
+        <tr>
+            <td>${team.teamName}</td>
+            <td>${team.teamType}</td>
+            <td><c:if test="${team.active==true}">Active</c:if>
+                <c:if test="${team.active==false}">Inactive</c:if>
+            </td>
+            <td>${team.countryName}</td>
+            <td>
+                    ${team.teamDescription}
+            </td>
+            <td><img style="width: 200px" src="${pageContext.request.contextPath}${team.teamPhoto}" alt=""/></td>
+            <td>
+                <a href="${pageContext.request.contextPath}/team/update?teamId=${team.teamId}"
+                   class="btn btn-primary btn-circle ml-1" role="button"
+                ><i class="far fa-edit text-white"></i
+                ></a>
+            </td>
+            <td>
+                <a href="${pageContext.request.contextPath}/team/delete?teamId=${team.teamId}"
+                   class="btn btn-danger btn-circle ml-1" role="button"
+                ><i class="fas fa-trash text-white"></i
+                ></a>
+            </td>
+        </tr>
     </c:forEach>
     </tbody>
 </table>

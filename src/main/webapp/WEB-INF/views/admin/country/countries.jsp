@@ -38,7 +38,8 @@
       <tr>
         <td>${country.countryName}</td>
         <td><img style="width: 200px" src="${pageContext.request.contextPath}${country.countryLogo}" alt="" /></td>
-        <td>${country.active}</td>
+        <td><c:if test="${country.active == true}">Active</c:if>
+        <c:if test="${country.active==false}">Inactive</c:if> </td>
         <td>
           <a href="${pageContext.request.contextPath}/country/update?countryId=${country.country_id}" class="btn btn-primary btn-circle ml-1" role="button"
             ><i class="far fa-edit text-white"></i

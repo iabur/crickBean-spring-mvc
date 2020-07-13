@@ -40,17 +40,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#"
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/country/show-all?queryText="
           >Countries
-          <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Teams</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/team/teams?queryText=&countryId=">Teams</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Team Members</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/member/show-all?queryText=">Team Members</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
