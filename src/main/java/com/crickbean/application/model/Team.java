@@ -2,6 +2,7 @@ package com.crickbean.application.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Table
 @Entity(name = "tbl_team")
@@ -29,6 +30,9 @@ public class Team implements Serializable {
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
+
+    @OneToMany(mappedBy = "team")
+    private Set<Member> members;
 
     public Team() {
     }
@@ -88,5 +92,13 @@ public class Team implements Serializable {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
     }
 }

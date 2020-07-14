@@ -80,5 +80,4 @@ public class TeamService {
     public List<Team> specificTeams(Long countryId, String queryText){
         return teamRepository.findAllByActiveTrueAndCountryAndTeamNameContaining(countryRepository.findById(countryId).get(), queryText);
     }
-
 }

@@ -49,7 +49,7 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/team/teams?queryText=&countryId=">Teams</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/member/show-all?queryText=">Team Members</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/member/members?queryText=&teamId=">Team Members</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
