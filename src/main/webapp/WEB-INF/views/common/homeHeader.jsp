@@ -27,7 +27,7 @@
 <div>
     <div class="header-dark"><!--Navbar -->
         <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1">
-            <a class="navbar-brand" href="#">CrickBean</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/">CrickBean</a>
             <button
                     class="navbar-toggler"
                     type="button"
@@ -42,6 +42,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/users"
+                        >Admin
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/country/show-all?queryText=&countryId="
                         >Countries
                             <span class="sr-only"></span>
@@ -54,8 +60,11 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/member/members?queryText=&teamId=">Team Members</a>
                     </li>
                 </ul>
+
                 <ul class="navbar-nav ml-auto nav-flex-icons">
+                   <span style="margin-top: 13px; font-size: 20px; color: gray">  ${user.username}</span>
                     <li class="nav-item avatar dropdown">
+
                         <a
                                 class="nav-link dropdown-toggle"
                                 id="navbarDropdownMenuLink-55"
@@ -64,8 +73,8 @@
                                 aria-expanded="false"
                         >
                             <img
-                                    style="width: 40px;"
-                                    src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"
+                                    style="width: 40px; height: 40px"
+                                    src="${pageContext.request.contextPath}${user.logo}"
                                     class="rounded-circle z-depth-0"
                                     alt="avatar image"
                             />
@@ -74,7 +83,7 @@
                                 class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                 aria-labelledby="navbarDropdownMenuLink-555"
                         >
-                            <a class="dropdown-item" href="#">Log Out</a>
+                            <a class="dropdown-item" href="/logout">Log Out</a>
                         </div>
                     </li>
                 </ul>

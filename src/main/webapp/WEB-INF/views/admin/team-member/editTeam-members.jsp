@@ -46,13 +46,6 @@
     </div>
 
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
-        <label for="teams" class="mr-3">Select Team: </label>
-        <form:select path="teamId" class="form-control">
-            <form:options items="${teams}" itemValue="teamId" itemLabel="teamName"/>
-        </form:select>
-    </div>
-
-    <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
         <label for="description" class="mr-3">Description: </label>
         <form:textarea path="memberDescription"
                        class="form-control"

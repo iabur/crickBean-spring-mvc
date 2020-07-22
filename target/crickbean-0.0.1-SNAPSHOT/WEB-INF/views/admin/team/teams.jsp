@@ -1,7 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/adminSidebar.jsp"/>
 <jsp:include page="/WEB-INF/views/common/adminHeader.jsp"/>
+<sec:authorize access="hasAnyAuthority('ROLE_ADMIN','ROLE_COUNTRY_MANAGER')">
 <h1 class="ml-3">Add a new Team</h1>
 <form:form action="${pageContext.request.contextPath}/team/add" enctype="multipart/form-data" modelAttribute="team">
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
@@ -15,12 +17,6 @@
         />
     </div>
 
-    <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
-        <label for="type" class="mr-3">Select Country: </label>
-        <form:select path="countryId" class="form-control">
-            <form:options items="${countries}" itemValue="country_id" itemLabel="countryName"/>
-        </form:select>
-    </div>
 
     <div class="form-group mx-sm-3 mb-2" style="width: 350px;">
         <label for="type" class="mr-3">Team Type: </label>
@@ -46,7 +42,7 @@
 
     <button type="submit" class="btn btn-primary ml-3 mt-1">Submit</button>
 </form:form>
-
+</sec:authorize>
 <table class="table mt-5 table-success table-hover">
     <thead class="thead-dark">
     <tr>

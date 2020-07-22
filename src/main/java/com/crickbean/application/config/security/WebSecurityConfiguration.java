@@ -37,18 +37,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // We are permitting all static resources to be accessed publicly
         http
                 .authorizeRequests()
-                .antMatchers("/img/**","/css/**", "/js/**", "/bootstrap/**", "/fonts/**", "/uploadedImages/**").permitAll()
+                .antMatchers("/img/**","/css/**", "/js/**", "/bootstrap/**", "/fonts/**", "/images/**").permitAll()
                 // We are restricting endpoints for individual roles.
                 // Only users with allowed roles will be able to access individual endpoints.
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/iccEmployee/add").hasRole("ADMIN")
-//                .antMatchers("/iccEmployee/show-all").hasAnyRole("ADMIN", "ICC_EMPLOYEE")
-//                .antMatchers("/iccEmployee/edit").hasAnyRole("ICC_EMPLOYEE")
-//
-//                .antMatchers("/country/add").hasRole("ICC_EMPLOYEE")
-//                .antMatchers("/country/**").hasRole("ICC_EMPLOYEE")
+                .antMatchers("/country/add").hasAnyRole("ADMIN","ICC_EMPLOYEE","COUNTRY_MANAGER")
+                .antMatchers("/country/update").hasAnyRole("ADMIN","ICC_EMPLOYEE","COUNTRY_MANAGER")
+                .antMatchers("/country/delete").hasAnyRole("ADMIN","ICC_EMPLOYEE","COUNTRY_MANAGER")
 
+                .antMatchers("/team/add").hasAnyRole("ADMIN","COUNTRY_MANAGER","TEAM_MANAGER")
+                .antMatchers("/team/update").hasAnyRole("ADMIN","COUNTRY_MANAGER","TEAM_MANAGER")
+                .antMatchers("/team/delete").hasAnyRole("ADMIN","COUNTRY_MANAGER","TEAM_MANAGER")
+
+                .antMatchers("/member/add").hasAnyRole("ADMIN","TEAM_MANAGER","PLAYER","STUFF")
+                .antMatchers("/member/update").hasAnyRole("ADMIN","TEAM_MANAGER","PLAYER","STUFF")
+                .antMatchers("/member/delete").hasAnyRole("ADMIN","TEAM_MANAGER","PLAYER","STUFF")
 
                 // Following line denotes that all requests must be authenticated.
                 // Hence, once a request comes to our application, we will check if the user is authenticated or not.

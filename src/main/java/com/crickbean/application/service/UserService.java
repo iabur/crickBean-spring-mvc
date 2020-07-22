@@ -1,6 +1,7 @@
 package com.crickbean.application.service;
 
 import com.crickbean.application.repositories.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,6 +38,10 @@ public class UserService implements UserDetailsService {
     //find a user by id
     public Optional<com.crickbean.application.model.User> getUserByUserId(Long id) {
         return userRepository.findById(id);
+    }
+
+    public com.crickbean.application.model.User getLoggedUser(Authentication authentication){
+        return userRepository.findByUsername(authentication.getName()).get();
     }
 
 }

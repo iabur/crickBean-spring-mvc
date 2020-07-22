@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface CountryRepository extends JpaRepository<Country, Long> {
     List<Country> findAllByActiveTrue();
     List<Country> findAllByActiveTrueAndCountryNameContains(String countryName);
+    Optional<Country> findAllByActiveTrueAndCountryName(String countryName);
+    Country findByCountryName(String countryName);
 }

@@ -5,13 +5,16 @@ import com.crickbean.application.model.User;
 import com.crickbean.application.repositories.AuthorityRepository;
 import com.crickbean.application.repositories.UserRepository;
 import com.crickbean.application.service.AuthorityService;
+import com.crickbean.application.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.Authenticator;
+import java.nio.channels.MulticastChannel;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,28 +26,22 @@ public class RootController {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthorityService authorityService;
+    private final UserService userService;
 
-    public RootController(AuthorityRepository authorityRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityService authorityService) {
+    public RootController(AuthorityRepository authorityRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityService authorityService, UserService userService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
         this.authorityRepository = authorityRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/")
-    public String root() {
+    public String root(Authentication authentication, Model model) {
+        model.addAttribute("user",userService.getLoggedUser(authentication));
         return "index";
     }
 
-    /*@GetMapping("/login")
-    public String login(Model model, @RequestParam(name = "error", required = false) String error) {
-
-        generateRoles();
-        generateUsers();
-
-        model.addAttribute("error", error);
-        return "auth/login";
-    }*/
     @GetMapping("/login")
     public String login(Model model, @RequestParam(name = "error", required = false) String error) {
         generateRoles();
@@ -56,11 +53,11 @@ public class RootController {
     private void generateRoles() {
 
         authorityService.create(new Role(System.nanoTime(), "ROLE_ADMIN"));
-        authorityService.create(new Role(System.nanoTime(), "ROLE_COUNTRY_BOARD"));
+        authorityService.create(new Role(System.nanoTime(), "ROLE_COUNTRY_MANAGER"));
         authorityService.create(new Role(System.nanoTime(), "ROLE_PLAYER"));
+        authorityService.create(new Role(System.nanoTime(), "ROLE_STUFF"));
         authorityService.create(new Role(System.nanoTime(), "ROLE_ICC_EMPLOYEE"));
         authorityService.create(new Role(System.nanoTime(), "ROLE_TEAM_MANAGER"));
-
     }
 
     private void generateUsers() {
@@ -74,15 +71,6 @@ public class RootController {
             userRepository.save(user);
         }
 
-        if (userRepository.findByUsername("user").isEmpty()) {
-            var user = new User();
-            user.setUsername("user");
-            user.setPassword(passwordEncoder.encode("secret"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(authorityService.findByRoleName("ROLE_TEAM_MANAGER"));
-            user.setRoles(roles);
-            userRepository.save(user);
-        }
         if (userRepository.findByUsername("icc").isEmpty()) {
             var user = new User();
             user.setUsername("icc");
@@ -95,4 +83,12 @@ public class RootController {
             userRepository.save(user);
         }
     }
+
+    @GetMapping("/users")
+    public String userList(Model model, Authentication authentication){
+        model.addAttribute("users",userRepository.findAll());
+        model.addAttribute("user",userService.getLoggedUser(authentication));
+        return "admin/user/users";
+    }
+
 }

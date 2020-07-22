@@ -4,8 +4,10 @@ import com.crickbean.application.dto.CountryDto;
 import com.crickbean.application.exceptions.ResourceNotFoundException;
 import com.crickbean.application.model.Country;
 import com.crickbean.application.service.CountryService;
+import com.crickbean.application.service.UserService;
 import com.crickbean.application.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
@@ -30,10 +32,14 @@ public class CountryController {
     @Autowired
     private ServletContext context;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/country/add")
-    public String addCountry(Model model) {
+    public String addCountry(Model model, Authentication authentication) {
         model.addAttribute("country", new CountryDto());
         model.addAttribute("allCountry", countryService.getAllCountry());
+        model.addAttribute("user", userService.getLoggedUser(authentication));
         model.addAttribute("message", "Insert a new country");
         return "admin/country/countries";
     }
@@ -66,14 +72,15 @@ public class CountryController {
     }
 
     @GetMapping("/country/update")
-    public String updateCountry(@RequestParam(name = "countryId") Long id, Model model) {
+    public String updateCountry(@RequestParam(name = "countryId") Long id, Model model, Authentication authentication) {
         model.addAttribute("countryId", id);
         model.addAttribute("country", new CountryDto());
+        model.addAttribute("user", userService.getLoggedUser(authentication));
         return "admin/country/editCountries";
     }
 
     @PostMapping("/country/update")
-    public String updateCountry(@ModelAttribute(name = "country") CountryDto countryDto, Model model, @RequestParam("file") MultipartFile file) {
+    public String updateCountry(@ModelAttribute(name = "country") CountryDto countryDto, Model model, @RequestParam("file") MultipartFile file, Authentication authentication) {
         if (countryDto.getCountryName() == null || countryDto.getCountryName().trim().isEmpty()) {
             throw new ResourceNotFoundException("Country not found");
         }
@@ -91,7 +98,7 @@ public class CountryController {
             Files.write(path, bytes);
             countryDto.setCountryLogo("/images/" + file.getOriginalFilename());
             System.out.println(countryDto);
-            countryService.saveUpdate(countryDto);
+            countryService.saveUpdate(countryDto, authentication);
             model.addAttribute("message", "Country updated successfully");
             return "redirect:/country/add";
         } catch (IOException e) {
@@ -106,8 +113,9 @@ public class CountryController {
     }
 
     @GetMapping("/country/show-all")
-    public String showAllCountry(Model model, @RequestParam(name = "queryText") String queryText) {
+    public String showAllCountry(Model model, @RequestParam(name = "queryText") String queryText, Authentication authentication) {
         model.addAttribute("country", countryService.searchCountry(queryText));
+        model.addAttribute("user", userService.getLoggedUser(authentication));
         return "/country/countries";
     }
 

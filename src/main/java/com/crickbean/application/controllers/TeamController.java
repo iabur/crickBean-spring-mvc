@@ -6,9 +6,11 @@ import com.crickbean.application.exceptions.ResourceNotFoundException;
 import com.crickbean.application.model.Team;
 import com.crickbean.application.service.CountryService;
 import com.crickbean.application.service.TeamService;
+import com.crickbean.application.service.UserService;
 import com.crickbean.application.util.Constants;
 import javafx.scene.chart.ScatterChart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +33,19 @@ public class TeamController {
     @Autowired
     private CountryService countryService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/team/add")
-    public String addTeam(Model model) {
+    public String addTeam(Model model, Authentication authentication) {
         model.addAttribute("allTeams", teamService.allTeams());
-        model.addAttribute("countries", countryService.getAllCountry());
         model.addAttribute("team", new TeamDto());
+        model.addAttribute("user", userService.getLoggedUser(authentication));
         return "admin/team/teams";
     }
 
     @PostMapping("/team/add")
-    public String addTeam(@ModelAttribute(name = "team") TeamDto teamDto, Model model, @RequestParam(name = "file") MultipartFile file) {
+    public String addTeam(@ModelAttribute(name = "team") TeamDto teamDto, Model model, @RequestParam(name = "file") MultipartFile file, Authentication authentication) {
         System.out.println(teamDto);
         if (teamDto.getTeamName() == null || teamDto.getTeamName().trim().isEmpty()) {
             throw new ResourceNotFoundException("Team not found");
@@ -58,7 +63,7 @@ public class TeamController {
             }
             Files.write(path, bytes);
             teamDto.setTeamPhoto("/images/" + file.getOriginalFilename());
-            teamService.saveTeam(teamDto);
+            teamService.saveTeam(teamDto, authentication);
             model.addAttribute("message", "Team added successfully");
             return "redirect:/team/add";
         } catch (IOException e) {
@@ -67,15 +72,16 @@ public class TeamController {
     }
 
     @GetMapping("/team/update")
-    public String updateTeam(@RequestParam(name = "teamId") Long id, Model model) {
+    public String updateTeam(@RequestParam(name = "teamId") Long id, Model model, Authentication authentication) {
         model.addAttribute("teamId", id);
         model.addAttribute("countries", countryService.getAllCountry());
         model.addAttribute("team", new TeamDto());
-        return "admin/team/editTeams";
+        model.addAttribute("user", userService.getLoggedUser(authentication));
+        return "/admin/team/editTeams";
     }
 
     @PostMapping("/team/update")
-    public String updataTeam(@ModelAttribute(name = "team") TeamDto teamDto, Model model, @RequestParam("file") MultipartFile file) {
+    public String updataTeam(@ModelAttribute(name = "team") TeamDto teamDto, Model model, @RequestParam("file") MultipartFile file, Authentication authentication) {
         if (teamDto.getTeamName() == null || teamDto.getTeamName().trim().isEmpty()) {
             throw new ResourceNotFoundException("Team not found");
         }
@@ -92,7 +98,7 @@ public class TeamController {
             }
             Files.write(path, bytes);
             teamDto.setTeamPhoto("/images/" + file.getOriginalFilename());
-            teamService.saveUpdate(teamDto);
+            teamService.saveUpdate(teamDto, authentication);
             model.addAttribute("message", "Team updated successfully");
             return "redirect:/team/add";
         } catch (IOException e) {
@@ -108,7 +114,7 @@ public class TeamController {
 
 
     @GetMapping("/team/teams")
-    public String specificTeam(Model model, @RequestParam(name = "countryId") Long countryId, @RequestParam(name = "queryText") String queryText) {
+    public String specificTeam(Model model, @RequestParam(name = "countryId") Long countryId, @RequestParam(name = "queryText") String queryText, Authentication authentication) {
 
         if(countryId == null)
         {
@@ -119,6 +125,7 @@ public class TeamController {
             model.addAttribute("countryId", countryId);
             model.addAttribute("teams",teamService.specificTeams(countryId, queryText));
         }
+        model.addAttribute("user", userService.getLoggedUser(authentication));
         return "team/allTeams";
     }
 }

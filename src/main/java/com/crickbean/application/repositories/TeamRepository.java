@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -15,4 +16,5 @@ import java.util.Set;
 public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Team> findAllByActiveTrueAndTeamNameContaining(String teamName);
     List<Team> findAllByActiveTrueAndCountryAndTeamNameContaining(Country country, String teamName);
+    Optional<Team> findByTeamName(String teamName);
 }

@@ -26,7 +26,7 @@
     <div>
         <div class="header-dark"><!--Navbar -->
 <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1">
-  <a class="navbar-brand" href="#">CrickBean</a>
+  <a class="navbar-brand" href="${pageContext.request.contextPath}/">CrickBean</a>
   <button
     class="navbar-toggler"
     type="button"
@@ -40,6 +40,12 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/users"
+            >Admin
+                <span class="sr-only"></span>
+            </a>
+        </li>
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/country/show-all?queryText="
           >Countries
@@ -53,6 +59,7 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
+        <span style="margin-top: 13px; font-size: 20px; color: gray">  ${user.username}</span>
       <li class="nav-item avatar dropdown">
         <a
           class="nav-link dropdown-toggle"
@@ -62,8 +69,8 @@
           aria-expanded="false"
         >
           <img
-            style="width: 40px;"
-            src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg"
+            style="width: 40px; height: 40px;"
+            src="${pageContext.request.contextPath}${user.logo}"
             class="rounded-circle z-depth-0"
             alt="avatar image"
           />
@@ -93,11 +100,11 @@
                         </div>
                         <div class="accordian">
                             <ul>
-                                <li><a class="image_title" href="#">KungFu Panda</a><a href="#"><img src="${pageContext.request.contextPath}/img/WIN_20200413_21_34_19_Pro.jpg"></a></li>
-                                <li><a class="image_title" href="#">Toy Story</a><a href="#"><img src="${pageContext.request.contextPath}/img/mountain_bg.jpg"></a></li>
-                                <li><a class="image_title" href="#">Wall-E</a><a href="#"><img src="${pageContext.request.contextPath}/img/WIN_20200413_21_34_19_Pro.jpg"></a></li>
-                                <li><a class="image_title" href="#">UP!</a><a href="#"><img src="${pageContext.request.contextPath}/img/iphone.svg"></a></li>
-                                <li><a class="image_title" href="#">Cars</a><a href="#"><img src="${pageContext.request.contextPath}/img/screen-content-iphone-6.jpg"></a></li>
+                                <li><a class="image_title" href="#">KungFu Panda</a><a href="#"><img class="assco" src="${pageContext.request.contextPath}/img/1 (1).jpg"></a></li>
+                                <li><a class="image_title" href="#">Toy Story</a><a href="#"><img class="assco" src="${pageContext.request.contextPath}/img/1 (2).jpg"></a></li>
+                                <li><a class="image_title" href="#">Wall-E</a><a href="#"><img class="assco" src="${pageContext.request.contextPath}/img/1 (3).jpg"></a></li>
+                                <li><a class="image_title" href="#">UP!</a><a href="#"><img class="assco" src="${pageContext.request.contextPath}/img/1 (4).jpg"></a></li>
+                                <li><a class="image_title" href="#">Cars</a><a href="#"><img class="assco" src="${pageContext.request.contextPath}/img/1 (5).jpg"></a></li>
                             </ul>
                         </div>
                     </div>

@@ -2,9 +2,13 @@
 <%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="Form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/adminSidebar.jsp"/>
 <jsp:include page="/WEB-INF/views/common/adminHeader.jsp"/>
+<sec:authorize access="hasAnyAuthority('ROLE_ADMIN','ROLE_ICC_EMPLOYEE')">
   <h1 class="ml-3">Add a new country</h1>
+
   <form:form action="${pageContext.request.contextPath}/country/add" modelAttribute="country" enctype="multipart/form-data" class="form-inline align-center">
     <div class="form-group mx-sm-3 mb-2">
       <label for="country" class="mr-3">Country: </label>
@@ -23,6 +27,7 @@
 
     <button type="submit" class="btn btn-primary mb-2">Submit</button>
   </form:form>
+</sec:authorize>
   <table class="table mt-5 table-success table-hover">
     <thead class="thead-dark">
       <tr>
